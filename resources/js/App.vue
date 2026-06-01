@@ -8,7 +8,7 @@
       v-for="crud in cruds"
       :key="crud.id"
       :id="crud.id"
-      :name="crud.title"
+      :name="crud.name"
       :color="crud.color"
       @update="updateCrud"
       @delete="deleteCrud"
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import CrudComponent from './components/CrudComponent.vue'
 
 export default {
@@ -26,27 +27,39 @@ export default {
 
   data() {
     return {
-      cruds: [
-        {
-          id: 1,
-          title: 'Primer registro',
-          color: 'red'
-        }
-      ]
+      cruds: []
     }
   },
 
+  mounted() {
+    this.getCruds()
+  },
+
   methods: {
-    addCrud() {
-      console.log('Add')
+    async getCruds() {
+      const response = await axios.get('/cruds')
+      this.cruds = response.data
     },
 
-    updateCrud(id, color) {
-      console.log('Update', id, color)
+    async addCrud() {
+      const response = await axios.get('/cruds/create')
+      this.cruds.push(response.data)
     },
 
-    deleteCrud(id) {
-      console.log('Delete', id)
+    async updateCrud(id, color) {
+      await axios.put(`/cruds/${id}`, {
+        color: color
+      })
+
+      const crud = this.cruds.find(item => item.id === id)
+      if (crud) {
+        crud.color = color
+      }
+    },
+
+    async deleteCrud(id) {
+      await axios.delete(`/cruds/${id}`)
+      this.cruds = this.cruds.filter(item => item.id !== id)
     }
   }
 }

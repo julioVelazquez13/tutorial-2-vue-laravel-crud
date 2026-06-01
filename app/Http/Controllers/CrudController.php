@@ -4,62 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Models\Crud;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CrudController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response(Crud::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $crud = Crud::create([
+            'name' => 'Registro ' . rand(1, 1000),
+'color' => rand(0,1) ? 'red' : 'green',
+        ]);
+
+        return response($crud->jsonSerialize(), Response::HTTP_CREATED);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Crud $crud)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Crud $crud)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Crud $crud)
     {
-        //
+        $crud->update([
+            'color' => $request->color,
+        ]);
+
+        return response(null, Response::HTTP_OK);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Crud $crud)
     {
-        //
+        $crud->delete();
+
+        return response(null, Response::HTTP_OK);
     }
 }

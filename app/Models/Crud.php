@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Crud extends Model
 {
     protected $fillable = [
-        'title',
-        'description'
-    ];
+    'name',
+    'color'
+];
 }

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('cruds', function (Blueprint $table) {
     $table->id();
 
-    $table->string('title');
-    $table->text('description');
+    $table->string('name');
+    $table->string('color');
 
     $table->timestamps();
 });
